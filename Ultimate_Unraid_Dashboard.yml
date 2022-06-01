@@ -17,19 +17,21 @@ services:
   telegraf:
     container_name: GUS-telegraf
     image: telegraf:1.20.2-alpine
+    privileged: true
     expose:
       - 6379
     volumes:
-      - /var/run/utmp:/var/run/utmp
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /:/rootfs
-      - /sys:/rootfs/sys
-      - /etc:/rootfs/etc
-      - /proc:/rootfs/proc
-      - ${APPDATA_PATH}/GUS-telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
-      - /run/udev:/run/udev
+      - /var/run/utmp:/var/run/utmp:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /sys:/rootfs/sys:ro
+      - /etc:/rootfs/etc:ro
+      - /proc:/rootfs/proc:ro
+      - ${APPDATA_PATH}/GUS-telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /run/udev:/run/udev:ro
     environment:
       HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
       HOST_ETC: /rootfs/etc
       HOST_MOUNT_PREFIX: /rootfs
       TZ: ${TIMEZONE}
@@ -57,7 +59,6 @@ services:
     restart: unless-stopped
     depends_on:
       - influxdb
-      - telegraf
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/ElectricBrainUK/UnraidAPI/master/static/iconx64.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:3005]/"
