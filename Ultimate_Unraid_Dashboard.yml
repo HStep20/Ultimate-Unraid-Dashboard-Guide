@@ -26,7 +26,7 @@ services:
       - /sys:/rootfs/sys
       - /etc:/rootfs/etc
       - /proc:/rootfs/proc
-      - /etc/telegraf/telegraf.conf:${APPDATA_PATH}/GUS-telegraf/telegraf.conf
+      - ${APPDATA_PATH}/GUS-telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
       - /run/udev:/run/udev
     environment:
       HOST_PROC: /rootfs/proc
