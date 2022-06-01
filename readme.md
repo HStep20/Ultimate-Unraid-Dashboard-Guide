@@ -74,7 +74,6 @@ Since this setup relies on so many different containers and configuration files,
 **Varken** - The 'Database' field at the bottom is 'telegraf', and the 'username' field at the bottom is 'telegraf'
 ![](images/varken.PNG)
 
-- Update the variables at the top of the dashboard to match your server's setup
 
 
-I highly recommedn double checking final configs with the official setup instructions found in the Unraid Forums: https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/
+If you've uploaded the dashboard found at falconexe's forum page, then you should be close to finished. You can close the configuration screen, and go to your dashboard. You should also need to set the variables at the top of your dashboard to match the information related to your setup. I highly recommend checking final configs with the official setup instructions found in the Unraid Forums: https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/ as I just wanted to get you up and running with docker-compose. 
