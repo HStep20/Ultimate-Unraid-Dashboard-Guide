@@ -21,7 +21,8 @@ Since this setup relies on so many different containers and configuration files,
 - Enter a name, and hit okay
 - Scroll back down, and Press the Gear next to the Stack you just created
 - Under 'Edit env', copy the .env variables from this repository, and paste them into the textbox. Replace any of the variables with data according to your UnRaid Setup
-  - TZ - Your Timezone
+  - HOSTNAME - The hostname of your server. Usually its 'Tower'
+  - TIMEZONE - Your Timezone
   - APPDATA_PATH - The path to your appdata share
     - If you want to bypass the unraid fs layer, you can put '/mnt/YOURCACHEDISKNAME/appdata'
   - UNRAID_API_UI_PORT - The Port you will access your 'UnraidAPI' container through

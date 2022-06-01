@@ -18,6 +18,7 @@ services:
     container_name: GUS-telegraf
     image: telegraf:1.20.2-alpine
     privileged: true
+    hostname: ${HOSTNAME}
     expose:
       - 6379
     volumes:
