@@ -1,0 +1,98 @@
+version: "3"
+services:
+  influxdb:
+    container_name: GUS-influx
+    image: influxdb:1.8.4
+    expose:
+      - 8083
+      - 8086
+    volumes:
+      - ${APPDATA_PATH}/GUS-influxdb:/var/lib/influxdb
+    restart: unless-stopped
+    environment:
+      TZ: ${TIMEZONE}
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/pootzko/InfluxData.Net/master/nuget-icon.png"
+
+  telegraf:
+    container_name: GUS-telegraf
+    image: telegraf:1.20.2-alpine
+    expose:
+      - 6379
+    volumes:
+      - /var/run/utmp:/var/run/utmp
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/rootfs
+      - /sys:/rootfs/sys
+      - /etc:/rootfs/etc
+      - /proc:/rootfs/proc
+      - /etc/telegraf/telegraf.conf:${APPDATA_PATH}/GUS-telegraf/telegraf.conf
+      - /run/udev:/run/udev
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_ETC: /rootfs/etc
+      HOST_MOUNT_PREFIX: /rootfs
+      TZ: ${TIMEZONE}
+    restart: unless-stopped
+    command: /bin/sh -c 'apk update && apk upgrade && apk add ipmitool && apk add smartmontools && apk add lm_sensors && telegraf'
+    depends_on:
+      - influxdb
+    labels:
+      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/telegraf.png"
+
+  unraidapi:
+    container_name: GUS-unraidapi
+    image: electricbrainuk/unraidapi
+    ports:
+      - ${UNRAID_API_UI_PORT}:80
+    volumes:
+      - ${APPDATA_PATH}/GUS-UnraidAPI:/app/config
+    environment:
+      MQTTBroker: hassio
+      MQTTPort: 1883
+      MQTTPass: pass
+      MQTTBaseTopic: homeassistant
+      KeyStorage: config
+      TZ: ${TIMEZONE}
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+      - telegraf
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/ElectricBrainUK/UnraidAPI/master/static/iconx64.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:3005]/"
+
+  varken:
+    container_name: GUS-varken
+    image: boerderij/varken
+    volumes:
+      - ${APPDATA_PATH}/GUS-varken:/config
+    environment:
+      TZ: ${TIMEZONE}
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/benderstwin/docker-templates/master/images/varken.png"
+
+  grafana:
+    container_name: GUS-grafana
+    image: grafana/grafana
+    ports:
+      - ${GRAFANA_UI_PORT}:3000
+    volumes:
+      - ${APPDATA_PATH}/GUS-grafana:/var/lib/grafana
+    environment:
+      GF_SERVER_ROOT_URL: ${GF_SERVER_ROOT_URL}
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
+      TZ: ${TIMEZONE}
+    depends_on:
+      - influxdb
+      - telegraf
+      - unraidapi
+      - varken
+    restart: unless-stopped
+    command: grafana-cli plugins install grafana-piechart-panel && grafana-cli plugins install grafana-worldmap-panel && grafana-cli plugins install marcusolsson-json-datasource && grafana-cli plugins install dalvany-image-panel
+    labels:
+      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/grafana.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:3000]/"
