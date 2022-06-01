@@ -11,7 +11,8 @@ Community Developer 'falconexe' over at the unraid forums has built and maintain
 Since this setup relies on so many different containers and configuration files, there have been attempts to 'ease' users into it with 'all-in-one' solutions (like testdasi's abandoned [grafana-unraid-stack](https://github.com/testdasi/grafana-unraid-stack) project), but it felt more realistic to use Docker-Compose for the job. 
 
 ## Prerequisites:
-- A Functioning Unraid Operating System
+- A Functioning Unraid Operating System on 6.10.2
+  - This requirement is based on the new 'labels' provided for docker compose, which lets us set icons and 'webui' parameters for compose-built containers
 - Docker Compose Manager plugin
 
 ### Installation
