@@ -72,6 +72,7 @@ Since this setup relies on so many different containers and configuration files,
 **UnraidAPI**
 ![](images/unraidapi.PNG)
 **Varken** - The 'Database' field at the bottom is 'telegraf', and the 'username' field at the bottom is 'telegraf'
+*Note: The Varken data is stored in influx, so it uses an influxdb data source, as well as contacting it through the 'influxdb' hostname, but it uses a different port than telegraf*
 ![](images/varken.PNG)
 
 
