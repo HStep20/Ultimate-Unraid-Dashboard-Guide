@@ -1,5 +1,6 @@
 6/2/2022 Update - As it turns out, running the containers on a Docker-Compose network causes issues with the network interface data gathered by Telegraf. I looked into a few possible solutions, but it seemed like the best option was to host everything in Bridge mode, and Telegraf in Host mode, in order to gather data properly. Config files and database connections need to be updated to use YOURSERVERIP instead of container names. The four main places this will happen is:
 - Your telegraf.conf needs to update the [outputs.influx] URL field to match your server IP instead of 'http://influxdb:8086'
+- Your varken.ini needs to update the [influxdb] url to be YOURSERVERIP
 - Your Data Sources in grafana need to be updated to use your server IP, instead of container names (Telegraf, UnraidAPI, and Varken data sources)
 
 If you want to clean your influx database as well, you can enter the container with the 'console' option, and run these commands:
