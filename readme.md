@@ -60,23 +60,49 @@ Since this setup relies on so many different containers and configuration files,
 *Again, massive thanks to skaterpunk for doing the hard config work*
 
 #### Grafana
+
+##### If you already have set up the UUD and are transitioning to Docker-Compose there are a few things that need to be changed in the Grafana WebUI configuration. Your data sources are referred to by IP address,but you need to change them to refer by container names.
+
 - Hit the 'Compose Up' button in the 'Docker' UnRaid tab, the 'Docker Compose Down', then 'Docker Compose Up' again
   - This is to ensure the Grafana Plugins are installed/recognized properly
 - The Actual Grafana Dashboard is found in the [official forum post](https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/). Scroll down to the attachments in the main post, and download the 'Current' version.
 
-- Because Docker Compose can refer to other devices by container name, there are a few things that need to be changed in the Grafana WebUI configuration.
+
 - Log into Grafana, and hit the 'Configuration' on the left side panel
   ![](images/grafana_config.PNG)
 - In the configuration, you will need to edit the Telegraf, UnraidAPI, and Varken data sources. 
 - Replace your current IP in them with the container names 'telegraf', 'unraidapi', 'varken'
-**Telegraf** - The 'Database' field at the bottom is 'telegraf', and the 'username' field at the bottom is 'telegraf'
+##### Telegraf 
+- Hit 'Add Data Source' and choose an 'InfluxDB' data type
+- With the containers being on the same docker compose network, we can refer to them by container name in URLs.
+- Top fields:
+  - URL - http://influxdb:8086
+- Bottom Fields:
+  - Database - telegraf
+  - User - telegraf
+
   ![](images/telegraf.PNG)
-**UnraidAPI**
+##### UnraidAPI
+- Hit 'Add Data Source' and choose an 'JSON API' data type
+- With the containers being on the same docker compose network, we can refer to them by container name in URLs.
+- Top fields:
+  - URL - http://unraidapi:80/api/getServers
+
 ![](images/unraidapi.PNG)
-**Varken** - The 'Database' field at the bottom is 'telegraf', and the 'username' field at the bottom is 'telegraf'
-*Note: The Varken data is stored in influx, so it uses an influxdb data source, as well as contacting it through the 'influxdb' hostname, but it uses a different port than telegraf*
+##### Varken
+- Hit 'Add Data Source' and choose an 'InfluxDB' data type
+- With the containers being on the same docker compose network, we can refer to them by container name in URLs.
+- Top fields:
+  - URL - http://influxdb:8086
+- Bottom Fields:
+  - Database - telegraf
+  - User - telegraf
+
+
 ![](images/varken-updated.PNG)
 
 
 
-If you've uploaded the dashboard found at falconexe's forum page, then you should be close to finished. You can close the configuration screen, and go to your dashboard. You should also need to set the variables at the top of your dashboard to match the information related to your setup. I highly recommend checking final configs with the official setup instructions found in the Unraid Forums: https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/ as I just wanted to get you up and running with docker-compose. 
+If you've uploaded the dashboard found at falconexe's forum page, then you should be close to finished. You can close the configuration screen, and go to your dashboard. You will need to set the variables at the top of your dashboard to match the information related to your setup. 
+
+Since there are a few final things you can do (like add in a location api to visualize where plex streams originate), I highly recommend checking final configs with the official setup instructions found in the Unraid Forums: https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/ as I just wanted to get you up and running with docker-compose. 
