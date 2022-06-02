@@ -3,9 +3,10 @@ services:
   influxdb:
     container_name: GUS-influx
     image: influxdb:1.8.4
-    expose:
-      - 8083
-      - 8086
+    network_mode: bridge
+    hostname: ${HOSTNAME}
+    ports:
+      - 8086:8086
     volumes:
       - ${APPDATA_PATH}/GUS-influxdb:/var/lib/influxdb
     restart: unless-stopped
@@ -14,11 +15,28 @@ services:
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/pootzko/InfluxData.Net/master/nuget-icon.png"
 
+  chronograf:
+    image: chronograf:alpine
+    container_name: GUS-chronograf
+    network_mode: bridge
+    hostname: ${HOSTNAME}
+    volumes:
+      - ${APPDATA_PATH}/GUS-chronograf:/var/lib/chronograf
+    ports:
+      - ${CHRONOGRAF_UI_PORT}:8888
+    depends_on:
+      - influxdb
+    labels:
+      - "net.unraid.docker.icon=https://external-content.duckduckgo.com/ip3/docs.influxdata.com.ico"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:7889]/"
+
   telegraf:
     container_name: GUS-telegraf
     image: telegraf:1.20.2-alpine
     privileged: true
+    network_mode: host
     hostname: ${HOSTNAME}
+
     expose:
       - 6379
     volumes:
@@ -41,11 +59,13 @@ services:
     depends_on:
       - influxdb
     labels:
-      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/telegraf.png"
+      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/telegraf.png"  
 
   unraidapi:
     container_name: GUS-unraidapi
     image: electricbrainuk/unraidapi
+    network_mode: bridge
+    hostname: ${HOSTNAME}
     ports:
       - ${UNRAID_API_UI_PORT}:80
     volumes:
@@ -67,6 +87,8 @@ services:
   varken:
     container_name: GUS-varken
     image: boerderij/varken
+    network_mode: bridge
+    hostname: ${HOSTNAME}
     volumes:
       - ${APPDATA_PATH}/GUS-varken:/config
     environment:
@@ -80,6 +102,8 @@ services:
   grafana:
     container_name: GUS-grafana
     image: grafana/grafana
+    network_mode: bridge
+    hostname: ${HOSTNAME}
     ports:
       - ${GRAFANA_UI_PORT}:3000
     volumes:
