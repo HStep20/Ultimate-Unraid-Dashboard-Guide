@@ -72,6 +72,7 @@ Since this setup relies on so many different containers and configuration files,
 - In your /mnt/user/appdata, create a folder called 'GUS-varken'
   - You can change this, but you'll need to edit the Docker-Compose stack if you do.
 - Download the 'varken.ini' file in the /appdata/GUS-varken folder of this repository
+- Set your INFLUXDB ip:port to your influxdb containers ip:port
 - The Varken.ini file consists of individual 'blocks' for each service you configure with it. You will need to go into each instance of tautulli/sonarr/radarr/lidarr/sickchill/ombi in order to set up the information like URLs and API Keys for each individual block
   - Read carefully, because there's a few ways to format things like ips/ports
 - Once all of your services you want to connect are configured in the varken.ini, place it into your appdata/GUS-varken folder on your server
@@ -81,7 +82,8 @@ Since this setup relies on so many different containers and configuration files,
 
 - In your /mnt/user/appdata, create a folder called 'GUS-telegraf'
 - Download the 'telegraf.conf' file found in the /appdata/GUS-telegraf folder of this repository
-- Most of the config should be done. You may need to change is the influx username/password, if you set them, but the Docker-Compose doesn't specify any.
+- Most of the config should be done. Set your INFLUXDB ip:port to your influxdb containers ip:port
+- You may need to change is the influx username/password, if you set them, but the Docker-Compose doesn't specify any.
 - In the 'telegraf.conf, uncomment either the [[inputs.hddtemp]\] or the [[inputs.ipmi_sensor]\] line, depending on your method of gathering data. More often than not, this is not required, but if you run the HDDTemp container, you can connect it here.
   - If you use server hardware, it will likely be the ipmi line, and you'll need the plugin
   - If you use consumner hardware, hddtemp will likely suffice
@@ -96,10 +98,9 @@ Since this setup relies on so many different containers and configuration files,
 - Hit the 'Compose Up' button in the 'Docker' UnRaid tab, the 'Docker Compose Down', then 'Docker Compose Up' again
   - This is to ensure the Grafana Plugins are installed/recognized properly
 - The Actual Grafana Dashboard is found in the [official forum post](https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/). Scroll down to the attachments in the main post, and download the 'Current' version.
-
-
 - Log into Grafana, and hit the 'Configuration' gear icon on the left side panel
 - In the configuration, you will need to edit the Telegraf, UnraidAPI, and Varken data sources
+
 ##### Telegraf 
 - Hit 'Add Data Source' and choose an 'InfluxDB' data type
 - With the containers being on the same docker compose network, we can refer to them by container name in URLs.
