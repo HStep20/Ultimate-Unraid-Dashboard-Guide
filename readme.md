@@ -97,7 +97,9 @@ Since this setup relies on so many different containers and configuration files,
 
 - Hit the 'Compose Up' button in the 'Docker' UnRaid tab, the 'Docker Compose Down', then 'Docker Compose Up' again
   - This is to ensure the Grafana Plugins are installed/recognized properly
-- The Actual Grafana Dashboard is found in the [official forum post](https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/). Scroll down to the attachments in the main post, and download the 'Current' version.
+- ~~The Actual Grafana Dashboard is found in the [official forum post](https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/). Scroll down to the attachments in the main post, and download the 'Current' version.~~
+  - As of 12/1/2022, the forum post outlining the UUD seems to have been taken down. Its unclear exactly why it was removed, but Ive added my Dashboard JSON to the repository.
+  - Download the 'GUS-Dashboard.json' file and import it into Grafana under the '4 box' button on the left menu   
 - Log into Grafana, and hit the 'Configuration' gear icon on the left side panel
 - In the configuration, you will need to edit the Telegraf, UnraidAPI, and Varken data sources
 
@@ -134,4 +136,6 @@ Since this setup relies on so many different containers and configuration files,
 
 If you've uploaded the dashboard found at falconexe's forum page, then you should be close to finished. You can close the configuration screen, and go to your dashboard. You will need to set the variables at the top of your dashboard to match the information related to your setup. 
 
-Since there are a few final things you can do (like add in a location api to visualize where plex streams originate), I highly recommend checking final configs with the official setup instructions found in the Unraid Forums: https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/ as I just wanted to get you up and running with docker-compose. 
+Since there are a few final things you can do (like add in a location api to visualize where plex streams originate), I highly recommend checking final configs with the official setup instructions found in the Unraid Forums as I just wanted to get you up and running with docker-compose
+
+With the removal of the original forum post, you can view those instructions here on Internet Archive's WayBackMachine: https://web.archive.org/web/20220616040234/https://forums.unraid.net/topic/96895-ultimate-unraid-dashboard-uud/
