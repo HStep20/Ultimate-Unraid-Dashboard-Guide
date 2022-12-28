@@ -127,7 +127,7 @@ Since this setup relies on so many different containers and configuration files,
 - Top fields:
   - URL - http://YOURSERVERIP:8086
 - Bottom Fields:
-  - Database - telegraf
+  - Database - varken
   - User - telegraf
 
 
