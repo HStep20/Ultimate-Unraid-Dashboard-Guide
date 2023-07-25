@@ -59,11 +59,11 @@ services:
     depends_on:
       - influxdb
     labels:
-      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/telegraf.png"  
+      - "net.unraid.docker.icon=https://github.com/atribe/unRAID-docker/raw/master/icons/telegraf.png"
 
   unraidapi:
     container_name: GUS-unraidapi
-    image: electricbrainuk/unraidapi
+    image: bokker/unraidapi-re:6.12 # Use tag for your version - 6.11 or 6.12
     network_mode: bridge
     hostname: ${HOSTNAME}
     ports:
